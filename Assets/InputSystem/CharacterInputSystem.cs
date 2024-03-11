@@ -38,11 +38,11 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Light"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""c763309a-e1d4-4611-95bf-c8e80edc25bf"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
                 }
             ],

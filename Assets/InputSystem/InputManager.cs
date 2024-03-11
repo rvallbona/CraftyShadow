@@ -6,6 +6,8 @@ public class InputManager : MonoBehaviour
     public static InputManager _INPUT_MANAGER;
     private CharacterInputSystem characterInputSystem;
 
+    private bool lightButtonPressed;
+
     private Vector2 leftAxisValue = Vector2.zero;
     private void Awake()
     {
@@ -20,6 +22,8 @@ public class InputManager : MonoBehaviour
 
             characterInputSystem.Character.Move.performed += LeftAxisUpdate;
 
+            characterInputSystem.Character.Light.started += LightButtonPressed;
+
             _INPUT_MANAGER = this;
             DontDestroyOnLoad(this);
         }
@@ -33,4 +37,9 @@ public class InputManager : MonoBehaviour
         leftAxisValue = context.ReadValue<Vector2>();
     }
     public Vector2 GetLeftAxisUpdate() { return leftAxisValue; }
+    private void LightButtonPressed(InputAction.CallbackContext context)
+    {
+        lightButtonPressed = true;
+    }
+    public bool GetLightButtonPressed(){ return lightButtonPressed; }
 }

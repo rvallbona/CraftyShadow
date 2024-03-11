@@ -10,13 +10,14 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     private Vector3 direction;
 
+    private bool lightPress;
+
     private bool canInteractLight, interactingLight;
 
     private CharacterInputSystem characterInputSystem;
     private CharacterController characterController;
     private void Awake()
     {
-        inputManager = InputManager._INPUT_MANAGER;
         characterInputSystem = new CharacterInputSystem();
     }
     void Start()
@@ -25,18 +26,18 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        Inputs();
         Movement();
+        LightLogic();
         characterController.Move(playerVelocity * Time.deltaTime);
-
-        //Change to NewInputSistem
-        if (canInteractLight && Input.GetKeyDown(KeyCode.E))
-        {
-            LightLogic();
-        }
     }
     private void FixedUpdate()
     {
-        moveInput = inputManager.GetLeftAxisUpdate();
+        moveInput = InputManager._INPUT_MANAGER.GetLeftAxisUpdate();
+    }
+    private void Inputs()
+    {
+        lightPress = InputManager._INPUT_MANAGER.GetLightButtonPressed();
     }
     private void Movement()
     {
@@ -60,7 +61,11 @@ public class PlayerController : MonoBehaviour
     }
     private void LightLogic()
     {
-        interactingLight = true;
+        //Change to NewInputSistem
+        if (canInteractLight && /*lightPress*/Input.GetKeyDown(KeyCode.E))
+        {
+            interactingLight = true;
+        }
     }
     public void SetCanInteractLight(bool can)
     {
