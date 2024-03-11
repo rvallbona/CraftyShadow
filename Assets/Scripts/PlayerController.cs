@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private bool lightPress;
 
     private bool canInteractLight, interactingLight;
+    private bool energy;
 
     private CharacterInputSystem characterInputSystem;
     private CharacterController characterController;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        energy = false;
     }
     void Update()
     {
@@ -39,6 +41,14 @@ public class PlayerController : MonoBehaviour
     {
         lightPress = InputManager._INPUT_MANAGER.GetLightButtonPressed();
     }
+    private void OnEnable()
+    {
+        characterInputSystem.Character.Enable();
+    }
+    private void OnDisable()
+    {
+        characterInputSystem.Character.Disable();
+    }
     private void Movement()
     {
         direction = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
@@ -51,29 +61,21 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, Time.deltaTime * 1000f);
         }
     }
-    private void OnEnable()
-    {
-        characterInputSystem.Character.Enable();
-    }
-    private void OnDisable()
-    {
-        characterInputSystem.Character.Disable();
-    }
     private void LightLogic()
     {
         //Change to NewInputSistem
-        if (canInteractLight && /*lightPress*/Input.GetKeyDown(KeyCode.E))
+        if (canInteractLight && Input.GetKeyDown(KeyCode.E) || canInteractLight && Input.GetKeyDown(KeyCode.Joystick2Button0))
         {
             interactingLight = true;
         }
     }
-    public void SetCanInteractLight(bool can)
-    {
-        canInteractLight = can;
-    }
-    public void SetInteractLight(bool can)
-    {
-        interactingLight = can;
-    }
+
+    /*--- SETTERS || GETTERS ---*/
+    public void SetCanInteractLight(bool can) { canInteractLight = can; }
+
+    public void SetInteractLight(bool can) { interactingLight = can; }
     public bool GetInteractingLight() { return interactingLight; }
+
+    public void SetEnergy(bool e) { energy = e; }
+    public bool GetEnergy() { return energy; }
 }
