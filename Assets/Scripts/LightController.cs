@@ -6,10 +6,17 @@ public class LightController : MonoBehaviour
 {
     private PlayerController playerController;
     private Light actualLight;
+    public bool isActive;
     private void Start()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         actualLight = this.gameObject.GetComponent<Light>();
+        CheckStatusLight();
+    }
+    private void Update()
+    {
+        CheckStatusLight();
+
     }
     private void OnTriggerStay(Collider other)
     {
@@ -25,6 +32,17 @@ public class LightController : MonoBehaviour
         {
             playerController.SetCanInteractLight(false);
             playerController.SetInteractLight(false);
+        }
+    }
+    private void CheckStatusLight()
+    {
+        if (actualLight.intensity == 0)
+        {
+            isActive = false;
+        }
+        else if (actualLight.intensity == 1)
+        {
+            isActive = true;
         }
     }
     private void LightIntensityController()
