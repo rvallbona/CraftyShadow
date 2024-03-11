@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public class EnemyController : MonoBehaviour
 {
@@ -16,6 +14,14 @@ public class EnemyController : MonoBehaviour
             {
                 gameObject.transform.position = Vector3.MoveTowards(transform.position, new Vector3(destTransform[i].position.x, gameObject.transform.position.y, destTransform[i].position.z), velocity * Time.deltaTime);
             }
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            SceneManager.LoadScene("SampleScene");
+            Debug.Log("LOSE");
         }
     }
 }
