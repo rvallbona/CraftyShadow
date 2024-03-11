@@ -35,6 +35,15 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Light"",
+                    ""type"": ""Button"",
+                    ""id"": ""c763309a-e1d4-4611-95bf-c8e80edc25bf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -103,6 +112,17 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a16d406d-4854-4cdc-b719-03b9ad6b7f21"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Light"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -112,6 +132,7 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
         // Character
         m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
         m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
+        m_Character_Light = m_Character.FindAction("Light", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -174,11 +195,13 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Character;
     private List<ICharacterActions> m_CharacterActionsCallbackInterfaces = new List<ICharacterActions>();
     private readonly InputAction m_Character_Move;
+    private readonly InputAction m_Character_Light;
     public struct CharacterActions
     {
         private @CharacterInputSystem m_Wrapper;
         public CharacterActions(@CharacterInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Character_Move;
+        public InputAction @Light => m_Wrapper.m_Character_Light;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -191,6 +214,9 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Light.started += instance.OnLight;
+            @Light.performed += instance.OnLight;
+            @Light.canceled += instance.OnLight;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -198,6 +224,9 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Light.started -= instance.OnLight;
+            @Light.performed -= instance.OnLight;
+            @Light.canceled -= instance.OnLight;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -218,5 +247,6 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
     public interface ICharacterActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnLight(InputAction.CallbackContext context);
     }
 }
