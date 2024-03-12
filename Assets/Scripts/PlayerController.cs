@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class PlayerController : MonoBehaviour
 {
     private InputManager inputManager;
@@ -66,6 +65,7 @@ public class PlayerController : MonoBehaviour
         //Change to NewInputSistem
         if (canInteractLight && Input.GetKeyDown(KeyCode.E) || canInteractLight && Input.GetKeyDown(KeyCode.Joystick2Button0))
         {
+            Debug.Log("Button");
             interactingLight = true;
         }
     }

@@ -1316,10 +1316,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3630711092131798944, guid: 048c2f9e7353d25448d16f66e3929b2a, type: 3}
-      propertyPath: chaseDistance
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3630711092131798944, guid: 048c2f9e7353d25448d16f66e3929b2a, type: 3}
       propertyPath: lightController.Array.data[0]
       value: 
       objectReference: {fileID: 1121594084}
@@ -1327,10 +1323,6 @@ PrefabInstance:
       propertyPath: lightController.Array.data[1]
       value: 
       objectReference: {fileID: 97288214}
-    - target: {fileID: 3633272890719787270, guid: 048c2f9e7353d25448d16f66e3929b2a, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5019128766077120313, guid: 048c2f9e7353d25448d16f66e3929b2a, type: 3}
       propertyPath: m_Name
       value: Enemy

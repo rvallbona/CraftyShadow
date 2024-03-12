@@ -270,7 +270,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -290,7 +290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 165e50db17b40cf4b82bbd831bb3d1e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaseDistance: 4
+  chaseDistance: 10
+  alertDuration: 5
   lightController:
   - {fileID: 0}
   - {fileID: 0}

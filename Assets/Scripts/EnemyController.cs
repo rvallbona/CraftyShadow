@@ -1,14 +1,20 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
-
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private float chaseDistance = 2f;
+    [SerializeField] private float alertDuration = 3f;
+    private float alertTimer = 0f;
+
+    private bool isRotatingRight = true;
+    private float rotationTimer = 0f;
+    private float rotationDuration = 2f;
+
     [SerializeField] private GameObject[] lightController;
     private NavMeshAgent agent;
 
-    private enum State { Patrol, Chase }
+    private enum State { Patrol, Alert, Chase }
     private State currentState;
 
     void Start()
@@ -22,6 +28,9 @@ public class EnemyController : MonoBehaviour
         {
             case State.Patrol:
                 Patrol();
+                break;
+            case State.Alert:
+                Alert();
                 break;
             case State.Chase:
                 Chase();
@@ -45,6 +54,26 @@ public class EnemyController : MonoBehaviour
             currentState = State.Chase;
         }
     }
+    void Alert()
+    {
+        Debug.Log("Alert");
+        RotateAgentPeriodically();
+
+        alertTimer += Time.deltaTime; // +Temp
+
+        // Check for player detection
+        if (PlayerDetected())
+        {
+            currentState = State.Chase;
+        }
+
+        // Check if the alert duration has passed
+        if (alertTimer >= alertDuration)
+        {
+            currentState = State.Patrol;
+            alertTimer = 0f; // Reset timer
+        }
+    }
     void Chase()
     {
         Debug.Log("Chase");
@@ -53,7 +82,7 @@ public class EnemyController : MonoBehaviour
         // Check if player is out of chase distance
         if (!PlayerDetected())
         {
-            currentState = State.Patrol;
+            currentState = State.Alert;
         }
     }
     bool PlayerDetected()
@@ -73,6 +102,31 @@ public class EnemyController : MonoBehaviour
             }
         }
         return false;
+    }
+    void RotateAgentPeriodically()
+    {
+        rotationTimer += Time.deltaTime;
+
+        if (rotationTimer >= rotationDuration)
+        {
+            // Change direction rotate
+            isRotatingRight = !isRotatingRight;
+            rotationTimer = 0f;
+
+            // Apply rotation
+            if (isRotatingRight)
+            {
+                RotateAgent(180f);  //  Rotate 180g right
+            }
+            else
+            {
+                RotateAgent(-180f);  // Rotate 180g left
+            }
+        }
+    }
+    void RotateAgent(float angle)
+    {
+        agent.transform.Rotate(Vector3.up, angle);
     }
     private void OnTriggerEnter(Collider other)
     {
