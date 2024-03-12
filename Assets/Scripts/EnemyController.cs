@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyController : MonoBehaviour
 {
@@ -60,9 +61,24 @@ public class EnemyController : MonoBehaviour
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
-            float distance = Vector3.Distance(transform.position, player.transform.position);
-            return distance < chaseDistance;
+            // Raycast to check for obstacles between the enemy and the player
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, player.transform.position - transform.position, out hit, chaseDistance))
+            {
+                if (hit.collider.CompareTag("Player"))
+                {
+                    // Player is in line of sight
+                    return true;
+                }
+            }
         }
         return false;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            SceneManager.LoadScene("Level1");
+        }
     }
 }
