@@ -1,27 +1,68 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private LightController[] lightController;
-    [SerializeField] private Transform[] destTransform;
-    [SerializeField] private float velocity = 5f;
-    private void Update()
+    [SerializeField] private float chaseDistance = 2f;
+    [SerializeField] private GameObject[] lightController;
+    private NavMeshAgent agent;
+
+    private enum State { Patrol, Chase }
+    private State currentState;
+
+    void Start()
     {
-        for (int i = 0; i < lightController.Length; i++)
+        agent = GetComponent<NavMeshAgent>();
+        currentState = State.Patrol;
+    }
+    void Update()
+    {
+        switch (currentState)
         {
-            if (lightController[i].isActive)
-            {
-                gameObject.transform.position = Vector3.MoveTowards(transform.position, new Vector3(destTransform[i].position.x, gameObject.transform.position.y, destTransform[i].position.z), velocity * Time.deltaTime);
-            }
+            case State.Patrol:
+                Patrol();
+                break;
+            case State.Chase:
+                Chase();
+                break;
         }
     }
-    private void OnTriggerEnter(Collider other)
+    void Patrol()
     {
-        if (other.gameObject.CompareTag("Player"))
+        Debug.Log("Patrol");
+        for (int i = 0; i < lightController.Length; i++)
         {
-            SceneManager.LoadScene("SampleScene");
-            Debug.Log("LOSE");
+            if (lightController[i].gameObject.GetComponent<LightController>().isActive)
+            {
+                agent.SetDestination(lightController[i].gameObject.transform.position);
+            }
         }
+
+        // Check for player detection
+        if (PlayerDetected())
+        {
+            currentState = State.Chase;
+        }
+    }
+    void Chase()
+    {
+        Debug.Log("Chase");
+        agent.SetDestination(GameObject.FindGameObjectWithTag("Player").transform.position);
+
+        // Check if player is out of chase distance
+        if (!PlayerDetected())
+        {
+            currentState = State.Patrol;
+        }
+    }
+    bool PlayerDetected()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            return distance < chaseDistance;
+        }
+        return false;
     }
 }
