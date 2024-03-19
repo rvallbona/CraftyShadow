@@ -1,16 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 public class LightController : MonoBehaviour
 {
     private PlayerController playerController;
     private Light actualLight;
     [HideInInspector] public bool isActive;
+
+    private Material materialObject;
     private void Start()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         actualLight = this.gameObject.GetComponent<Light>();
         CheckStatusLight();
+        materialObject = this.gameObject.GetComponent<MeshRenderer>().materials[1];
+        materialObject.SetFloat("_Scale", 1);
     }
     private void Update()
     {
@@ -22,6 +24,7 @@ public class LightController : MonoBehaviour
         {
             playerController.SetCanInteractLight(true);
             LightIntensityController();
+            materialObject.SetFloat("_Scale", 1.1f);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -30,6 +33,7 @@ public class LightController : MonoBehaviour
         {
             playerController.SetCanInteractLight(false);
             playerController.SetInteractLight(false);
+            materialObject.SetFloat("_Scale", 1);
         }
     }
     private void CheckStatusLight()
