@@ -2,9 +2,10 @@ using UnityEngine;
 public class LightController : MonoBehaviour
 {
     private PlayerController playerController;
-    private Light actualLight; public bool defaultbool;
+    private Light actualLight;
     [HideInInspector] public bool isActive;
     private Material outlineObject;
+
     private float timer;
     private float defaultLight;
     private bool interacted;
@@ -20,13 +21,12 @@ public class LightController : MonoBehaviour
         timer = 0;
         interacted = false;
         defaultLight = this.gameObject.GetComponent<Light>().intensity;
-        defaultbool = false;
     }
     private void Update()
     {
         CheckStatusLight();
-        ResetLight();
-        //Debug.Log(this.gameObject.name + "-> isActive: " + this.gameObject.GetComponent<LightController>().isActive);
+
+        Debug.Log("energy: " + playerController.GetEnergy());
     }
     private void OnTriggerStay(Collider other)
     {
@@ -59,6 +59,7 @@ public class LightController : MonoBehaviour
         {
             isActive = true;
         }
+        ResetLight();
     }
     private void LightIntensityController()
     {
@@ -76,14 +77,22 @@ public class LightController : MonoBehaviour
             actualLight.intensity = 0;
 
             timer = 0;
+            interacted = true;
 
             playerController.SetInteractLight(false);
             playerController.SetEnergy(true);
         }
-        
     }
     private void ResetLight()
     {
-        if (timer >= 3 && interacted) { actualLight.intensity = defaultLight; }
+        if (timer >= 3 && interacted && playerController.GetEnergy())
+        {
+            Debug.Log("Reiniciando...");
+            actualLight.intensity = defaultLight;
+            playerController.SetInteractLight(false);
+            playerController.SetEnergy(false);
+            timer = 0;
+            interacted = false;
+        }
     }
 }
