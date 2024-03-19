@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
 
     private CharacterInputSystem characterInputSystem;
     private CharacterController characterController;
+
+    private Animator animator;
     private void Awake()
     {
         characterInputSystem = new CharacterInputSystem();
@@ -24,6 +26,8 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         energy = false;
+
+        animator = this.gameObject.GetComponent<Animator>();
     }
     void Update()
     {
