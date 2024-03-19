@@ -4,19 +4,22 @@ public class LightController : MonoBehaviour
     private PlayerController playerController;
     private Light actualLight;
     [HideInInspector] public bool isActive;
-
-    private Material materialObject;
+    private Material outlineObject;
+    private float timer;
     private void Start()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         actualLight = this.gameObject.GetComponent<Light>();
         CheckStatusLight();
-        materialObject = this.gameObject.GetComponent<MeshRenderer>().materials[1];
-        materialObject.SetFloat("_Scale", 1);
+
+        outlineObject = this.gameObject.GetComponent<MeshRenderer>().materials[1];
+        outlineObject.SetFloat("_Scale", 1);
     }
     private void Update()
     {
         CheckStatusLight();
+
+        //Debug.Log(this.gameObject.name + "-> isActive: " + this.gameObject.GetComponent<LightController>().isActive);
     }
     private void OnTriggerStay(Collider other)
     {
@@ -24,7 +27,8 @@ public class LightController : MonoBehaviour
         {
             playerController.SetCanInteractLight(true);
             LightIntensityController();
-            materialObject.SetFloat("_Scale", 1.1f);
+
+            outlineObject.SetFloat("_Scale", 1.1f);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -33,11 +37,14 @@ public class LightController : MonoBehaviour
         {
             playerController.SetCanInteractLight(false);
             playerController.SetInteractLight(false);
-            materialObject.SetFloat("_Scale", 1);
+
+            outlineObject.SetFloat("_Scale", 1);
         }
     }
     private void CheckStatusLight()
     {
+        timer += Time.deltaTime;
+        Debug.Log(timer);
         if (actualLight.intensity == 0)
         {
             isActive = false;
@@ -60,6 +67,7 @@ public class LightController : MonoBehaviour
         else if (actualLight.intensity == 1 && playerController.GetInteractingLight() && !playerController.GetEnergy())
         {
             actualLight.intensity = 0;
+            timer = 0;
             playerController.SetInteractLight(false);
             playerController.SetEnergy(true);
         }

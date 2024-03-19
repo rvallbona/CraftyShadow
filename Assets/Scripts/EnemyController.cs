@@ -39,7 +39,6 @@ public class EnemyController : MonoBehaviour
     }
     void Patrol()
     {
-        Debug.Log("Patrol");
         for (int i = 0; i < lightController.Length; i++)
         {
             if (lightController[i].gameObject.GetComponent<LightController>().isActive)
