@@ -2,10 +2,12 @@ using UnityEngine;
 public class LightController : MonoBehaviour
 {
     private PlayerController playerController;
-    private Light actualLight;
+    private Light actualLight; public bool defaultbool;
     [HideInInspector] public bool isActive;
     private Material outlineObject;
     private float timer;
+    private float defaultLight;
+    private bool interacted;
     private void Start()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -14,11 +16,16 @@ public class LightController : MonoBehaviour
 
         outlineObject = this.gameObject.GetComponent<MeshRenderer>().materials[1];
         outlineObject.SetFloat("_Scale", 1);
+
+        timer = 0;
+        interacted = false;
+        defaultLight = this.gameObject.GetComponent<Light>().intensity;
+        defaultbool = false;
     }
     private void Update()
     {
         CheckStatusLight();
-
+        ResetLight();
         //Debug.Log(this.gameObject.name + "-> isActive: " + this.gameObject.GetComponent<LightController>().isActive);
     }
     private void OnTriggerStay(Collider other)
@@ -44,12 +51,11 @@ public class LightController : MonoBehaviour
     private void CheckStatusLight()
     {
         timer += Time.deltaTime;
-        Debug.Log(timer);
-        if (actualLight.intensity == 0)
+        if (actualLight.intensity == 0)//Off
         {
             isActive = false;
         }
-        else if (actualLight.intensity == 1)
+        else if (actualLight.intensity == 1)//On
         {
             isActive = true;
         }
@@ -60,6 +66,7 @@ public class LightController : MonoBehaviour
         if (actualLight.intensity == 0 && playerController.GetInteractingLight() && playerController.GetEnergy())
         {
             actualLight.intensity = 1;
+
             playerController.SetInteractLight(false);
             playerController.SetEnergy(false);
         }
@@ -67,9 +74,16 @@ public class LightController : MonoBehaviour
         else if (actualLight.intensity == 1 && playerController.GetInteractingLight() && !playerController.GetEnergy())
         {
             actualLight.intensity = 0;
+
             timer = 0;
+
             playerController.SetInteractLight(false);
             playerController.SetEnergy(true);
         }
+        
+    }
+    private void ResetLight()
+    {
+        if (timer >= 3 && interacted) { actualLight.intensity = defaultLight; }
     }
 }

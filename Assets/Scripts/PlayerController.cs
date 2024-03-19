@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetInteractLight(bool can) { interactingLight = can; }
     public bool GetInteractingLight() { return interactingLight; }
-
+    
     public void SetEnergy(bool e) { energy = e; }
     public bool GetEnergy() { return energy; }
 }
