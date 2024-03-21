@@ -44,6 +44,15 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TextInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""864fcc07-ca7b-4cd0-bb1c-90def1b74a90"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +143,28 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""Light"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ab1cbb4-d917-40f6-98fa-1f24751cbc32"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TextInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a60bf5fb-9633-466a-a974-4823324f5c4a"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TextInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -144,6 +175,7 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
         m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
         m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
         m_Character_Light = m_Character.FindAction("Light", throwIfNotFound: true);
+        m_Character_TextInteract = m_Character.FindAction("TextInteract", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,12 +239,14 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
     private List<ICharacterActions> m_CharacterActionsCallbackInterfaces = new List<ICharacterActions>();
     private readonly InputAction m_Character_Move;
     private readonly InputAction m_Character_Light;
+    private readonly InputAction m_Character_TextInteract;
     public struct CharacterActions
     {
         private @CharacterInputSystem m_Wrapper;
         public CharacterActions(@CharacterInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Character_Move;
         public InputAction @Light => m_Wrapper.m_Character_Light;
+        public InputAction @TextInteract => m_Wrapper.m_Character_TextInteract;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -228,6 +262,9 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
             @Light.started += instance.OnLight;
             @Light.performed += instance.OnLight;
             @Light.canceled += instance.OnLight;
+            @TextInteract.started += instance.OnTextInteract;
+            @TextInteract.performed += instance.OnTextInteract;
+            @TextInteract.canceled += instance.OnTextInteract;
         }
 
         private void UnregisterCallbacks(ICharacterActions instance)
@@ -238,6 +275,9 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
             @Light.started -= instance.OnLight;
             @Light.performed -= instance.OnLight;
             @Light.canceled -= instance.OnLight;
+            @TextInteract.started -= instance.OnTextInteract;
+            @TextInteract.performed -= instance.OnTextInteract;
+            @TextInteract.canceled -= instance.OnTextInteract;
         }
 
         public void RemoveCallbacks(ICharacterActions instance)
@@ -259,5 +299,6 @@ public partial class @CharacterInputSystem: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLight(InputAction.CallbackContext context);
+        void OnTextInteract(InputAction.CallbackContext context);
     }
 }

@@ -1,3 +1,5 @@
+using UnityEditor.Presets;
+using UnityEditor.VersionControl;
 using UnityEngine;
 public class LightController : MonoBehaviour
 {
@@ -6,9 +8,9 @@ public class LightController : MonoBehaviour
     [HideInInspector] public bool isActive;
     private Material outlineObject;
 
-    private float timer;
-    private float defaultLight;
-    private bool interacted;
+    //private float timer, defaultLight;
+    //private bool interacted, canReset;
+    [SerializeField] private GameObject[] lightObjectConnected;
     private void Start()
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
@@ -18,9 +20,9 @@ public class LightController : MonoBehaviour
         outlineObject = this.gameObject.GetComponent<MeshRenderer>().materials[1];
         outlineObject.SetFloat("_Scale", 1);
 
-        timer = 0;
-        interacted = false;
-        defaultLight = this.gameObject.GetComponent<Light>().intensity;
+        //timer = 0;
+        //interacted = false;
+        //defaultLight = this.gameObject.GetComponent<Light>().intensity;
     }
     private void Update()
     {
@@ -50,7 +52,7 @@ public class LightController : MonoBehaviour
     }
     private void CheckStatusLight()
     {
-        timer += Time.deltaTime;
+        //timer += Time.deltaTime;
         if (actualLight.intensity == 0)//Off
         {
             isActive = false;
@@ -59,7 +61,7 @@ public class LightController : MonoBehaviour
         {
             isActive = true;
         }
-        ResetLight();
+        //ResetLight();
     }
     private void LightIntensityController()
     {
@@ -76,23 +78,23 @@ public class LightController : MonoBehaviour
         {
             actualLight.intensity = 0;
 
-            timer = 0;
-            interacted = true;
+            //timer = 0;
+            //interacted = true;
 
             playerController.SetInteractLight(false);
             playerController.SetEnergy(true);
         }
     }
-    private void ResetLight()
-    {
-        if (timer >= 3 && interacted && playerController.GetEnergy())
-        {
-            Debug.Log("Reiniciando...");
-            actualLight.intensity = defaultLight;
-            playerController.SetInteractLight(false);
-            playerController.SetEnergy(false);
-            timer = 0;
-            interacted = false;
-        }
-    }
+    //private void ResetLight()
+    //{
+    //    if (timer >= 3 && interacted && playerController.GetEnergy())
+    //    {
+    //        Debug.Log("Reiniciando...");
+    //        actualLight.intensity = defaultLight;
+    //        playerController.SetInteractLight(false);
+    //        playerController.SetEnergy(false);
+    //        timer = 0;
+    //        interacted = false;
+    //    }
+    //}
 }
