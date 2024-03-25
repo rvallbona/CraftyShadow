@@ -33,8 +33,8 @@ public class PlayerController : MonoBehaviour
     {
         Inputs();
         Movement();
-        LightLogic();
         characterController.Move(playerVelocity * Time.deltaTime);
+        LightLogic();
     }
     private void FixedUpdate()
     {
