@@ -27,8 +27,6 @@ public class LightController : MonoBehaviour
     private void Update()
     {
         CheckStatusLight();
-
-        Debug.Log("energy: " + playerController.GetEnergy());
     }
     private void OnTriggerStay(Collider other)
     {

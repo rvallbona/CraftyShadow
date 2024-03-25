@@ -1146,8 +1146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912ddd7c1bbaea0419d970cb9c63bbde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastDistance: 100
-  rayColor: {r: 0.030356646, g: 1, b: 0, a: 1}
+  maxLength: 100
+  lineRendererColor: {r: 1, g: 0, b: 0, a: 0}
 --- !u!65 &1888996445
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1165,7 +1165,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1227,7 +1227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1888996443}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 4, y: 2, z: 0}
+  m_LocalPosition: {x: 8.44, y: 1, z: 1.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1697,6 +1697,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5019128766077120313, guid: 048c2f9e7353d25448d16f66e3929b2a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1789,7 +1793,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8596610676483131198, guid: c2f974e5f08e10148b3db438d24ebbba, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.38
+      value: 2.98
       objectReference: {fileID: 0}
     - target: {fileID: 8596610676483131198, guid: c2f974e5f08e10148b3db438d24ebbba, type: 3}
       propertyPath: m_LocalPosition.y

@@ -1,19 +1,54 @@
 using UnityEngine;
 public class LaserController : MonoBehaviour
 {
-    [SerializeField] private float raycastDistance;
-    [SerializeField] private Color rayColor;
+    [SerializeField] private float maxLength = 100f;
+    private Transform startPoint;
+    private LineRenderer lineRenderer;
+    private RaycastHit hit;
+    [SerializeField] private Color lineRendererColor;
+    void Start()
+    {
+        lineRenderer = GetComponent<LineRenderer>(); 
+        if (lineRenderer == null)
+            lineRenderer = gameObject.AddComponent<LineRenderer>();
+
+        startPoint = this.transform;
+
+        lineRenderer.positionCount = 2;
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+        lineRenderer.material.color = lineRendererColor;
+    }
+    void Update()
+    {
+        Vector3 origin = startPoint.position;
+
+        if (Physics.Raycast(origin, startPoint.forward, out hit, maxLength))
+        {
+            HitLogic();
+
+            lineRenderer.SetPosition(0, origin);
+            lineRenderer.SetPosition(1, hit.point);
+        }
+        else
+        {
+            Vector3 endPoint = origin + startPoint.forward * maxLength;
+            lineRenderer.SetPosition(0, origin);
+            lineRenderer.SetPosition(1, endPoint);
+        }
+    }
+    private void HitLogic()
+    {
+        if (hit.collider.tag == "Player")
+        {
+            Debug.Log("player");
+        }
+    }
     private void OnDrawGizmos()
     {
-        Gizmos.color = rayColor;
+        if (startPoint == null) return;
 
-        Vector3 origin = transform.position;
-        Vector3 direction = transform.forward;
-
-        RaycastHit hit;
-        if (Physics.Raycast(origin, direction, out hit, raycastDistance))
-            Gizmos.DrawLine(origin, hit.point);
-        else
-            Gizmos.DrawRay(origin, direction * raycastDistance);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(startPoint.position, startPoint.position + startPoint.forward * maxLength);
     }
 }
