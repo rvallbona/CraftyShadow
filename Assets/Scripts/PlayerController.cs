@@ -1,7 +1,6 @@
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
-    //Character Logic
     private InputManager inputManager;
 
     [SerializeField] private float speed = 5f;
@@ -10,20 +9,15 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     private Vector3 direction;
 
-    private CharacterInputSystem characterInputSystem;
-    private CharacterController characterController;
-
-    private Animator animator;
-
-    //Light Controller
     private bool lightPress;
 
     private bool canInteractLight, interactingLight;
     private bool energy;
 
-    //Laser Logic
-    private bool key;
+    private CharacterInputSystem characterInputSystem;
+    private CharacterController characterController;
 
+    private Animator animator;
     private void Awake()
     {
         characterInputSystem = new CharacterInputSystem();
@@ -87,7 +81,4 @@ public class PlayerController : MonoBehaviour
     
     public void SetEnergy(bool e) { energy = e; }
     public bool GetEnergy() { return energy; }
-
-    public void SetKey(bool e) { key = e; }
-    public bool KeyEnergy() { return key; }
 }
